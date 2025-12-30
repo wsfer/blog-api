@@ -2,7 +2,7 @@ import type { User } from '../generated/prisma/client';
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import { prisma } from '../lib/prisma';
-import validateUser from '../middlewares/validateUser';
+import validateRegister from '../middlewares/validateRegister';
 import validateLogin from '../middlewares/validateLogin';
 import signInUser from '../utils/signInUser';
 import bcrypt from 'bcryptjs';
@@ -46,7 +46,7 @@ const postLogin = [
 ];
 
 const postRegister = [
-  validateUser,
+  validateRegister,
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
 
