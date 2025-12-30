@@ -63,8 +63,8 @@ const postRegister = [
       },
     });
 
-    // TODO: sign in jwt
-    res.status(201).json(newUser);
+    const token = await signInUser(newUser);
+    return res.json({ token });
   },
 ];
 
