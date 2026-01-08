@@ -1,6 +1,5 @@
 import type { User } from '../generated/prisma/client';
 import { Request, Response } from 'express';
-import { validationResult } from 'express-validator';
 import { prisma } from '../lib/prisma';
 import signInUser from '../utils/signInUser';
 import bcrypt from 'bcryptjs';
@@ -10,12 +9,6 @@ function getProfile(req: Request, res: Response) {
 }
 
 async function postLogin(req: Request, res: Response) {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(400).json(errors.mapped());
-  }
-
   const { username, password } = req.body;
   const user: User | null = await prisma.user.findUnique({
     where: { username },
@@ -38,12 +31,6 @@ async function postLogin(req: Request, res: Response) {
 }
 
 async function postRegister(req: Request, res: Response) {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(400).json(errors.mapped());
-  }
-
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const newUser = await prisma.user.create({
     data: {
