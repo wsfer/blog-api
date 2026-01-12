@@ -1,7 +1,7 @@
 import { Router } from 'express';
+import { validateCreatePost } from '../middlewares/validatePost';
 import postController from '../controllers/postController';
 import commentController from '../controllers/commentController';
-import validatePost from '../middlewares/validatePost';
 import authenticateUser from '../middlewares/authenticateUser';
 import handleFormErrors from '../middlewares/handleFormErrors';
 
@@ -14,7 +14,7 @@ postRouter.get('/:postId/comments', commentController.getPostComments);
 postRouter.post(
   '/',
   authenticateUser(['ADMIN']),
-  validatePost,
+  validateCreatePost,
   handleFormErrors,
   postController.postPost
 );
