@@ -51,9 +51,17 @@ const validateConfirmPassword = body('confirmPassword')
   .custom((value, { req }) => value === req.body.password)
   .withMessage('Confirm password is different from password field');
 
+const validateRole = body('role')
+  .optional()
+  .trim()
+  .toUpperCase()
+  .custom((value) => ['ADMIN', 'USER'].includes(value))
+  .withMessage('Invalid role');
+
 export default [
   validateUsername,
   validateEmail,
   validatePassword,
   validateConfirmPassword,
+  validateRole,
 ];

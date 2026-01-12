@@ -1,4 +1,6 @@
 import { Request, Response } from 'express';
+import { prisma } from '../lib/prisma';
+import bcrypt from 'bcryptjs';
 
 function getUsers(req: Request, res: Response) {
   res.status(418).end();
@@ -8,8 +10,19 @@ function getUser(req: Request, res: Response) {
   res.status(418).end();
 }
 
-function postUser(req: Request, res: Response) {
-  res.status(418).end();
+// Creates a new user without sign in
+async function postUser(req: Request, res: Response) {
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+  const newUser = await prisma.user.create({
+    data: {
+      username: req.body.username,
+      email: req.body.email,
+      password: hashedPassword,
+      role: req.body.role,
+    },
+  });
+
+  res.status(201).json(newUser);
 }
 
 function updateUser(req: Request, res: Response) {
