@@ -3,6 +3,7 @@ import authRouter from './routes/authRouter';
 import commentRouter from './routes/commentRouter';
 import postRouter from './routes/postRouter';
 import userRouter from './routes/userRouter';
+import errorHandler from './middlewares/errorHandler';
 
 const app = express();
 
@@ -19,5 +20,7 @@ app.use('/api/users', userRouter);
 app.use((req, res) => {
   res.status(404).end();
 });
+
+app.use(errorHandler);
 
 app.listen(3000, () => console.log(`Server started`));
