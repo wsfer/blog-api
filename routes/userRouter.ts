@@ -1,7 +1,7 @@
 import { Router } from 'express';
+import { validateRegister } from '../middlewares/validateUser';
 import userController from '../controllers/userController';
 import commentController from '../controllers/commentController';
-import validateRegister from '../middlewares/validateRegister';
 import authenticateUser from '../middlewares/authenticateUser';
 import handleFormErrors from '../middlewares/handleFormErrors';
 
