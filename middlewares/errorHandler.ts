@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
+import type { PrismaClientKnownRequestError } from '../generated/prisma/internal/prismaNamespace';
 
 function errorHandler(
   err: Error,
@@ -6,7 +7,13 @@ function errorHandler(
   res: Response,
   next: NextFunction
 ) {
-  console.log(err);
+  // Database entry to update not found
+  if ((err as PrismaClientKnownRequestError).code === 'P2025') {
+    return res.status(404).end();
+  }
+
+  // Default behavior
+  console.error(err);
   res.status(500).end();
 }
 
