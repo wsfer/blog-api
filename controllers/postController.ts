@@ -6,8 +6,15 @@ function getPosts(req: Request, res: Response) {
   res.status(418).end();
 }
 
-function getPost(req: Request, res: Response) {
-  res.status(418).end();
+async function getPost(req: Request, res: Response) {
+  const { postId } = req.params;
+  const post = await prisma.post.findUnique({ where: { id: postId } });
+
+  if (!post) {
+    return res.status(404).end();
+  }
+
+  res.json(post);
 }
 
 async function postPost(req: Request, res: Response) {
