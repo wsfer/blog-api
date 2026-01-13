@@ -10,6 +10,19 @@ const validateCreatePost = [
   body('content').trim().notEmpty().withMessage('Content is required'),
 ];
 
-// const validateUpdatePost = [];
+const validateUpdatePost = [
+  body('title')
+    .optional()
+    .trim()
+    .notEmpty()
+    .withMessage('Title is required')
+    .isLength({ max: 50 })
+    .withMessage('Title should not exceed 50 characters'),
+  body('content')
+    .optional()
+    .trim()
+    .notEmpty()
+    .withMessage('Content is required'),
+];
 
-export { validateCreatePost };
+export { validateCreatePost, validateUpdatePost };

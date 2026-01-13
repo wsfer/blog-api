@@ -31,8 +31,18 @@ async function postPost(req: Request, res: Response) {
   res.status(201).json(newPost);
 }
 
-function updatePost(req: Request, res: Response) {
-  res.status(418).end();
+async function updatePost(req: Request, res: Response) {
+  const { postId } = req.params;
+  const updatedPost = await prisma.post.update({
+    where: { id: postId },
+    data: {
+      title: req.body.title,
+      content: req.body.content,
+      updatedAt: new Date(),
+    },
+  });
+
+  res.json(updatedPost);
 }
 
 function deletePost(req: Request, res: Response) {

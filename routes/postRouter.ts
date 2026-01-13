@@ -1,5 +1,8 @@
 import { Router } from 'express';
-import { validateCreatePost } from '../middlewares/validatePost';
+import {
+  validateCreatePost,
+  validateUpdatePost,
+} from '../middlewares/validatePost';
 import postController from '../controllers/postController';
 import commentController from '../controllers/commentController';
 import authenticateUser from '../middlewares/authenticateUser';
@@ -19,7 +22,14 @@ postRouter.post(
   postController.postPost
 );
 
-postRouter.patch('/:postId', postController.updatePost);
+postRouter.patch(
+  '/:postId',
+  authenticateUser(['ADMIN']),
+  validateUpdatePost,
+  handleFormErrors,
+  postController.updatePost
+);
+
 postRouter.delete('/:postId', postController.deletePost);
 
 export default postRouter;
