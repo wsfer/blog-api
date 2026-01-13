@@ -28,7 +28,7 @@ async function postPost(req: Request, res: Response) {
     },
   });
 
-  res.json(newPost);
+  res.status(201).json(newPost);
 }
 
 function updatePost(req: Request, res: Response) {
