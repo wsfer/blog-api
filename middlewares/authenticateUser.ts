@@ -8,7 +8,7 @@ function authenticateUser(allowedRoles: Role[] | null = null) {
     passport.authenticate('jwt', (err: Error, user: User | null) => {
       if (err) return next(err);
 
-      // Check if user is logged authenticated
+      // Check if user is logged in
       if (!user) return res.status(401).end();
 
       // Check if user can access the resource (optional)
