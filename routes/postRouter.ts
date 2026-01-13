@@ -30,6 +30,10 @@ postRouter.patch(
   postController.updatePost
 );
 
-postRouter.delete('/:postId', postController.deletePost);
+postRouter.delete(
+  '/:postId',
+  authenticateUser(['ADMIN']),
+  postController.deletePost
+);
 
 export default postRouter;

@@ -45,8 +45,10 @@ async function updatePost(req: Request, res: Response) {
   res.json(updatedPost);
 }
 
-function deletePost(req: Request, res: Response) {
-  res.status(418).end();
+async function deletePost(req: Request, res: Response) {
+  const { postId } = req.params;
+  await prisma.post.delete({ where: { id: postId } });
+  res.status(204).end();
 }
 
 export default { getPosts, getPost, postPost, updatePost, deletePost };
