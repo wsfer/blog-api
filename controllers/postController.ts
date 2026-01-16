@@ -8,17 +8,32 @@ const POSTS_PER_PAGE = 10;
 
 async function getPosts(req: Request, res: Response) {
   const queryParams: GetPostsQueryParams = matchedData(req);
-  const posts = await prisma.post.findMany({
-    take: POSTS_PER_PAGE,
-    skip: (queryParams.page - 1) * POSTS_PER_PAGE,
-    where: {
-      title: { contains: queryParams.title },
-      content: { contains: queryParams.content },
-    },
-    orderBy: { [queryParams.orderBy]: queryParams.order },
-  });
+  const [count, posts] = await prisma.$transaction([
+    prisma.post.count({
+      where: {
+        title: { contains: queryParams.title },
+        content: { contains: queryParams.content },
+      },
+    }),
+    prisma.post.findMany({
+      take: POSTS_PER_PAGE,
+      skip: (queryParams.page - 1) * POSTS_PER_PAGE,
+      where: {
+        title: { contains: queryParams.title },
+        content: { contains: queryParams.content },
+      },
+      orderBy: { [queryParams.orderBy]: queryParams.order },
+    }),
+  ]);
 
-  res.json({ data: posts });
+  res.json({
+    data: posts,
+    pagination: {
+      count: count,
+      currentPage: queryParams.page,
+      pageSize: POSTS_PER_PAGE,
+    },
+  });
 }
 
 async function getPost(req: Request, res: Response) {
