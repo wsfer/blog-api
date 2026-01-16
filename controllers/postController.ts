@@ -1,9 +1,24 @@
 import type { Request, Response } from 'express';
 import type { User } from '../generated/prisma/client';
+import type { GetPostsQueryParams } from '../types/queryParams';
 import { prisma } from '../lib/prisma';
+import { matchedData } from 'express-validator';
 
-function getPosts(req: Request, res: Response) {
-  res.status(418).end();
+const POSTS_PER_PAGE = 10;
+
+async function getPosts(req: Request, res: Response) {
+  const queryParams: GetPostsQueryParams = matchedData(req);
+  const posts = await prisma.post.findMany({
+    take: POSTS_PER_PAGE,
+    skip: (queryParams.page - 1) * POSTS_PER_PAGE,
+    where: {
+      title: { contains: queryParams.title },
+      content: { contains: queryParams.content },
+    },
+    orderBy: { [queryParams.orderBy]: queryParams.order },
+  });
+
+  res.json({ data: posts });
 }
 
 async function getPost(req: Request, res: Response) {

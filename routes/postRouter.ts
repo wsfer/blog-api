@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   validateCreatePost,
   validateUpdatePost,
+  sanitizeGetPostsQuery,
 } from '../middlewares/validatePost';
 import postController from '../controllers/postController';
 import commentController from '../controllers/commentController';
@@ -10,7 +11,7 @@ import handleFormErrors from '../middlewares/handleFormErrors';
 
 const postRouter = Router();
 
-postRouter.get('/', postController.getPosts);
+postRouter.get('/', sanitizeGetPostsQuery, postController.getPosts);
 postRouter.get('/:postId', postController.getPost);
 postRouter.get('/:postId/comments', commentController.getPostComments);
 
