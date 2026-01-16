@@ -1,4 +1,4 @@
-import { body } from 'express-validator';
+import { body, query } from 'express-validator';
 
 const validateCreatePost = [
   body('title')
@@ -25,4 +25,21 @@ const validateUpdatePost = [
     .withMessage('Content is required'),
 ];
 
-export { validateCreatePost, validateUpdatePost };
+const sanitizeGetPostsQuery = [
+  query('title').default(undefined),
+  query('content').default(undefined),
+  query('page')
+    .toInt()
+    .customSanitizer((page) => (page < 1 ? 1 : page))
+    .default(1), // Because NaN < 1 returns false above
+  query('orderBy').customSanitizer((orderBy) =>
+    ['title', 'createdAt', 'updatedAt'].includes(orderBy)
+      ? orderBy
+      : 'createdAt'
+  ),
+  query('order').customSanitizer((order) =>
+    ['desc', 'asc'].includes(order) ? order : 'desc'
+  ),
+];
+
+export { validateCreatePost, validateUpdatePost, sanitizeGetPostsQuery };
