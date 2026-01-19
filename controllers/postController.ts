@@ -11,16 +11,16 @@ async function getPosts(req: Request, res: Response) {
   const [count, posts] = await prisma.$transaction([
     prisma.post.count({
       where: {
-        title: { contains: queryParams.title },
-        content: { contains: queryParams.content },
+        title: { contains: queryParams.title, mode: 'insensitive' },
+        content: { contains: queryParams.content, mode: 'insensitive' },
       },
     }),
     prisma.post.findMany({
       take: POSTS_PER_PAGE,
       skip: (queryParams.page - 1) * POSTS_PER_PAGE,
       where: {
-        title: { contains: queryParams.title },
-        content: { contains: queryParams.content },
+        title: { contains: queryParams.title, mode: 'insensitive' },
+        content: { contains: queryParams.content, mode: 'insensitive' },
       },
       orderBy: { [queryParams.orderBy]: queryParams.order },
     }),
