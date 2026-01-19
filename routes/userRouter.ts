@@ -8,7 +8,7 @@ import handleFormErrors from '../middlewares/handleFormErrors';
 const userRouter = Router();
 
 userRouter.get('/', userController.getUsers);
-userRouter.get('/:userId', userController.getUser);
+userRouter.get('/:userId', authenticateUser(['ADMIN']), userController.getUser);
 userRouter.get('/:userId/comments', commentController.getUserComments);
 
 userRouter.post(

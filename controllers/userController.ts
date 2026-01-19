@@ -6,8 +6,15 @@ function getUsers(req: Request, res: Response) {
   res.status(418).end();
 }
 
-function getUser(req: Request, res: Response) {
-  res.status(418).end();
+async function getUser(req: Request, res: Response) {
+  const { userId } = req.params;
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+
+  if (!user) {
+    return res.status(404).end();
+  }
+
+  res.json(user);
 }
 
 // Creates a new user without sign in
