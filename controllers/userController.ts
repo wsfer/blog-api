@@ -1,9 +1,41 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
+import type { GetUsersQueryParams } from '../types/queryParams';
 import { prisma } from '../lib/prisma';
+import { matchedData } from 'express-validator';
 import bcrypt from 'bcryptjs';
 
-function getUsers(req: Request, res: Response) {
-  res.status(418).end();
+const USERS_PER_PAGE = 10;
+
+async function getUsers(req: Request, res: Response) {
+  const queryParams: GetUsersQueryParams = matchedData(req);
+  const [count, users] = await prisma.$transaction([
+    prisma.user.count({
+      where: {
+        username: { contains: queryParams.username, mode: 'insensitive' },
+        email: { contains: queryParams.email, mode: 'insensitive' },
+        role: { equals: queryParams.role },
+      },
+    }),
+    prisma.user.findMany({
+      take: USERS_PER_PAGE,
+      skip: (queryParams.page - 1) * USERS_PER_PAGE,
+      where: {
+        username: { contains: queryParams.username, mode: 'insensitive' },
+        email: { contains: queryParams.email, mode: 'insensitive' },
+        role: { equals: queryParams.role },
+      },
+      orderBy: { [queryParams.orderBy]: queryParams.order },
+    }),
+  ]);
+
+  res.json({
+    data: users,
+    pagination: {
+      count: count,
+      currentPage: queryParams.page,
+      pageSize: USERS_PER_PAGE,
+    },
+  });
 }
 
 async function getUser(req: Request, res: Response) {

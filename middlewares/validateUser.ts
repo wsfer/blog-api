@@ -1,4 +1,4 @@
-import { body } from 'express-validator';
+import { body, query } from 'express-validator';
 import { prisma } from '../lib/prisma';
 
 const validateLogin = [
@@ -63,4 +63,26 @@ const validateRegister = [
 
 // const validateUpdateUser = [];
 
-export { validateLogin, validateRegister };
+const sanitizeGetUsersQuery = [
+  query('username').default(undefined),
+  query('email').default(undefined),
+  query('role')
+    .toUpperCase()
+    .customSanitizer((role) =>
+      ['ADMIN', 'USER'].includes(role) ? role : undefined
+    ),
+  query('page')
+    .toInt()
+    .customSanitizer((page) => (page < 1 ? 1 : page))
+    .default(1), // Because NaN < 1 returns false above
+  query('orderBy').customSanitizer((orderBy) =>
+    ['username', 'email', 'createdAt', 'updatedAt'].includes(orderBy)
+      ? orderBy
+      : 'createdAt'
+  ),
+  query('order').customSanitizer((order) =>
+    ['desc', 'asc'].includes(order) ? order : 'desc'
+  ),
+];
+
+export { validateLogin, validateRegister, sanitizeGetUsersQuery };
