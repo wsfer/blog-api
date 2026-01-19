@@ -10,8 +10,15 @@ function getUserComments(req: Request, res: Response) {
   res.status(418).end();
 }
 
-function getComment(req: Request, res: Response) {
-  res.status(418).end();
+async function getComment(req: Request, res: Response) {
+  const { commentId } = req.params;
+  const comment = await prisma.comment.findUnique({ where: { id: commentId } });
+
+  if (!comment) {
+    return res.status(404).end();
+  }
+
+  res.json(comment);
 }
 
 async function postComment(req: Request, res: Response) {
