@@ -68,8 +68,10 @@ function updateUser(req: Request, res: Response) {
   res.status(418).end();
 }
 
-function deleteUser(req: Request, res: Response) {
-  res.status(418).end();
+async function deleteUser(req: Request, res: Response) {
+  const { userId } = req.params;
+  await prisma.user.delete({ where: { id: userId } });
+  res.status(204).end();
 }
 
 export default { getUsers, getUser, postUser, updateUser, deleteUser };

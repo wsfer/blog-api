@@ -28,6 +28,10 @@ userRouter.post(
 );
 
 userRouter.patch('/:userId', userController.updateUser);
-userRouter.delete('/:userId', userController.deleteUser);
+userRouter.delete(
+  '/:userId',
+  authenticateUser(['ADMIN']),
+  userController.deleteUser
+);
 
 export default userRouter;
