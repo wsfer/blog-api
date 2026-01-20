@@ -16,3 +16,10 @@ export interface GetUsersQueryParams {
   orderBy: 'username' | 'email' | 'createdAt' | 'updatedAt';
   order: 'desc' | 'asc';
 }
+
+export interface GetCommentsQueryParams {
+  content: string | undefined;
+  page: number;
+  orderBy: 'createdAt' | 'updatedAt';
+  order: 'desc' | 'asc';
+}

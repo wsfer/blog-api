@@ -1,9 +1,39 @@
 import type { Request, Response } from 'express';
 import type { User } from '../generated/prisma/client';
+import type { GetCommentsQueryParams } from '../types/queryParams';
 import { prisma } from '../lib/prisma';
+import { matchedData } from 'express-validator';
 
-function getPostComments(req: Request, res: Response) {
-  res.status(418).end();
+const COMMENTS_PER_PAGE = 10;
+
+async function getPostComments(req: Request, res: Response) {
+  const { postId } = req.params;
+  const queryParams: GetCommentsQueryParams = matchedData(req);
+  const [count, comments] = await prisma.$transaction([
+    prisma.comment.count({
+      where: {
+        postId: postId,
+        content: { contains: queryParams.content, mode: 'insensitive' },
+      },
+    }),
+    prisma.comment.findMany({
+      take: COMMENTS_PER_PAGE,
+      skip: (queryParams.page - 1) * COMMENTS_PER_PAGE,
+      where: {
+        postId: postId,
+        content: { contains: queryParams.content, mode: 'insensitive' },
+      },
+    }),
+  ]);
+
+  res.json({
+    data: comments,
+    pagination: {
+      count: count,
+      currentPage: queryParams.page,
+      pageSize: COMMENTS_PER_PAGE,
+    },
+  });
 }
 
 function getUserComments(req: Request, res: Response) {

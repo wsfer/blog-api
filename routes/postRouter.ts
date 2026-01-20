@@ -4,6 +4,7 @@ import {
   validateUpdatePost,
   sanitizeGetPostsQuery,
 } from '../middlewares/validatePost';
+import { sanitizeGetCommentsQuery } from '../middlewares/validateComment';
 import postController from '../controllers/postController';
 import commentController from '../controllers/commentController';
 import authenticateUser from '../middlewares/authenticateUser';
@@ -13,7 +14,11 @@ const postRouter = Router();
 
 postRouter.get('/', sanitizeGetPostsQuery, postController.getPosts);
 postRouter.get('/:postId', postController.getPost);
-postRouter.get('/:postId/comments', commentController.getPostComments);
+postRouter.get(
+  '/:postId/comments',
+  sanitizeGetCommentsQuery,
+  commentController.getPostComments
+);
 
 postRouter.post(
   '/',
