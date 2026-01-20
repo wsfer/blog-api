@@ -7,4 +7,6 @@ const validateCreateComment = body('content')
   .isLength({ max: 400 })
   .withMessage('Comment should not exceed 400 characters');
 
-export { validateCreateComment };
+const validateUpdateComment = validateCreateComment; // Yes... it's the same function for now
+
+export { validateCreateComment, validateUpdateComment };

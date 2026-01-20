@@ -1,5 +1,8 @@
 import { Router } from 'express';
-import { validateCreateComment } from '../middlewares/validateComment';
+import {
+  validateCreateComment,
+  validateUpdateComment,
+} from '../middlewares/validateComment';
 import commentController from '../controllers/commentController';
 import authenticateUser from '../middlewares/authenticateUser';
 import handleFormErrors from '../middlewares/handleFormErrors';
@@ -16,7 +19,14 @@ commentRouter.post(
   commentController.postComment
 );
 
-commentRouter.patch('/:commentId', commentController.updateComment);
+commentRouter.patch(
+  '/:commentId',
+  authenticateUser(['ADMIN']),
+  validateUpdateComment,
+  handleFormErrors,
+  commentController.updateComment
+);
+
 commentRouter.delete('/:commentId', commentController.deleteComment);
 
 export default commentRouter;

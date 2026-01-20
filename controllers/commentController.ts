@@ -37,8 +37,35 @@ async function postComment(req: Request, res: Response) {
   res.status(201).json(newComment);
 }
 
-function updateComment(req: Request, res: Response) {
-  res.status(418).end();
+async function updateComment(req: Request, res: Response) {
+  const { commentId } = req.params;
+  const user = req.user as User;
+  const isAdmin = user.role === 'ADMIN';
+
+  // Ownership verification (admins skip this)
+  if (!isAdmin) {
+    const commentToUpdate = await prisma.comment.findUnique({
+      where: { id: commentId },
+    });
+
+    // Comment not found
+    if (!commentToUpdate) return res.status(404).end();
+
+    const isOwner = commentToUpdate.ownerId === user.id;
+
+    // User is not comment author
+    if (!isOwner) return res.status(403).end();
+  }
+
+  const updatedComment = await prisma.comment.update({
+    where: { id: commentId },
+    data: {
+      content: req.body.content,
+      updatedAt: new Date(),
+    },
+  });
+
+  res.json(updatedComment);
 }
 
 function deleteComment(req: Request, res: Response) {
