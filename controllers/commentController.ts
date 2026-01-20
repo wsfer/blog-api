@@ -68,8 +68,28 @@ async function updateComment(req: Request, res: Response) {
   res.json(updatedComment);
 }
 
-function deleteComment(req: Request, res: Response) {
-  res.status(418).end();
+async function deleteComment(req: Request, res: Response) {
+  const { commentId } = req.params;
+  const user = req.user as User;
+  const isAdmin = user.role === 'ADMIN';
+
+  // Ownership verification (admins skip this)
+  if (!isAdmin) {
+    const commentToDelete = await prisma.comment.findUnique({
+      where: { id: commentId },
+    });
+
+    // Comment not found
+    if (!commentToDelete) return res.status(404).end();
+
+    const isOwner = commentToDelete.ownerId === user.id;
+
+    // User is not comment author
+    if (!isOwner) return res.status(403).end();
+  }
+
+  await prisma.comment.delete({ where: { id: commentId } });
+  res.status(204).end();
 }
 
 export default {

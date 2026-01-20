@@ -27,6 +27,10 @@ commentRouter.patch(
   commentController.updateComment
 );
 
-commentRouter.delete('/:commentId', commentController.deleteComment);
+commentRouter.delete(
+  '/:commentId',
+  authenticateUser(),
+  commentController.deleteComment
+);
 
 export default commentRouter;
