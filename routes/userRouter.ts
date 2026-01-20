@@ -3,6 +3,7 @@ import {
   validateRegister,
   sanitizeGetUsersQuery,
 } from '../middlewares/validateUser';
+import { sanitizeGetCommentsQuery } from '../middlewares/validateComment';
 import userController from '../controllers/userController';
 import commentController from '../controllers/commentController';
 import authenticateUser from '../middlewares/authenticateUser';
@@ -17,7 +18,12 @@ userRouter.get(
   userController.getUsers
 );
 userRouter.get('/:userId', authenticateUser(['ADMIN']), userController.getUser);
-userRouter.get('/:userId/comments', commentController.getUserComments);
+userRouter.get(
+  '/:userId/comments',
+  authenticateUser(['ADMIN']),
+  sanitizeGetCommentsQuery,
+  commentController.getUserComments
+);
 
 userRouter.post(
   '/',

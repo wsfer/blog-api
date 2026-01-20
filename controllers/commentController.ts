@@ -36,8 +36,34 @@ async function getPostComments(req: Request, res: Response) {
   });
 }
 
-function getUserComments(req: Request, res: Response) {
-  res.status(418).end();
+async function getUserComments(req: Request, res: Response) {
+  const { userId } = req.params;
+  const queryParams: GetCommentsQueryParams = matchedData(req);
+  const [count, comments] = await prisma.$transaction([
+    prisma.comment.count({
+      where: {
+        ownerId: userId,
+        content: { contains: queryParams.content, mode: 'insensitive' },
+      },
+    }),
+    prisma.comment.findMany({
+      take: COMMENTS_PER_PAGE,
+      skip: (queryParams.page - 1) * COMMENTS_PER_PAGE,
+      where: {
+        ownerId: userId,
+        content: { contains: queryParams.content, mode: 'insensitive' },
+      },
+    }),
+  ]);
+
+  res.json({
+    data: comments,
+    pagination: {
+      count: count,
+      currentPage: queryParams.page,
+      pageSize: COMMENTS_PER_PAGE,
+    },
+  });
 }
 
 async function getComment(req: Request, res: Response) {
