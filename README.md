@@ -41,3 +41,241 @@ Build a Rest API for a Blog to learn about API basics and security.
   - ❌ GET Likes
   - ❌ POST Like
   - ❌ DELETE Like
+
+## Routes
+
+### Authentication
+
+<table>
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Method</th>
+      <th>Route</th>
+      <th>Description</th>
+      <th>Authorization</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>✅</td>
+      <td>GET</td>
+      <td>/auth/profile</td>
+      <td>Returns logged in user</td>
+      <td>USER and ADMIN</td>
+    </tr>
+    <tr>
+      <td>✅</td>
+      <td>POST</td>
+      <td>/auth/login</td>
+      <td>Login user</td>
+      <td>any</td>
+    </tr>
+    <tr>
+      <td>✅</td>
+      <td>POST</td>
+      <td>/auth/register</td>
+      <td>Creates and login a new user</td>
+      <td>any</td>
+    </tr>
+    <tr>
+      <td>⚠️</td>
+      <td>POST</td>
+      <td>/auth/logout</td>
+      <td>Can't be implemented</td>
+      <td>any</td>
+    </tr>
+  </tbody>
+</table>
+
+### Users
+
+<table>
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Method</th>
+      <th>Route</th>
+      <th>Description</th>
+      <th>Authorization</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>✅</td>
+      <td>GET</td>
+      <td>/api/users</td>
+      <td>List users</td>
+      <td>ADMIN</td>
+    </tr>
+    <tr>
+      <td>✅</td>
+      <td>GET</td>
+      <td>/api/users/:userId</td>
+      <td>Get user</td>
+      <td>ADMIN</td>
+    </tr>
+    <tr>
+      <td>✅</td>
+      <td>GET</td>
+      <td>/api/users/:userId/comments</td>
+      <td>List user comments</td>
+      <td>ADMIN</td>
+    </tr>
+    <tr>
+      <td>✅</td>
+      <td>POST</td>
+      <td>/api/users</td>
+      <td>Create new user</td>
+      <td>ADMIN</td>
+    </tr>
+    <tr>
+      <td>❌</td>
+      <td>PATCH</td>
+      <td>/api/users/:userId</td>
+      <td>Not implemented</td>
+      <td>any</td>
+    </tr>
+    <tr>
+      <td>✅</td>
+      <td>DELETE</td>
+      <td>/api/users/:userId</td>
+      <td>Delete user</td>
+      <td>ADMIN</td>
+    </tr>
+  </tbody>
+</table>
+
+### Posts
+
+<table>
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Method</th>
+      <th>Route</th>
+      <th>Description</th>
+      <th>Authorization</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>✅</td>
+      <td>GET</td>
+      <td>/api/posts</td>
+      <td>List posts</td>
+      <td>any</td>
+    </tr>
+    <tr>
+      <td>✅</td>
+      <td>GET</td>
+      <td>/api/posts/:postId</td>
+      <td>Get post</td>
+      <td>any</td>
+    </tr>
+    <tr>
+      <td>✅</td>
+      <td>GET</td>
+      <td>/api/posts/:postId/comments</td>
+      <td>List post comments</td>
+      <td>any</td>
+    </tr>
+    <tr>
+      <td>✅</td>
+      <td>POST</td>
+      <td>/api/posts</td>
+      <td>Create post</td>
+      <td>ADMIN</td>
+    </tr>
+    <tr>
+      <td>✅</td>
+      <td>PATCH</td>
+      <td>/api/posts/:postId</td>
+      <td>Update post</td>
+      <td>ADMIN</td>
+    </tr>
+    <tr>
+      <td>✅</td>
+      <td>DELETE</td>
+      <td>/api/posts/:postId</td>
+      <td>Delete post</td>
+      <td>ADMIN</td>
+    </tr>
+  </tbody>
+</table>
+
+### Comments
+
+<table>
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Method</th>
+      <th>Route</th>
+      <th>Description</th>
+      <th>Authorization</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>✅</td>
+      <td>GET</td>
+      <td>/api/comments</td>
+      <td>Get comment</td>
+      <td>any</td>
+    </tr>
+    <tr>
+      <td>✅</td>
+      <td>POST</td>
+      <td>/api/comments/:postId</td>
+      <td>Create comment</td>
+      <td>USER and ADMIN</td>
+    </tr>
+    <tr>
+      <td>⚠️</td>
+      <td>PATCH</td>
+      <td>/api/comments/:commentId</td>
+      <td>Update comment</td>
+      <td>ADMIN (TODO: add USER) </td>
+    </tr>
+    <tr>
+      <td>✅</td>
+      <td>DELETE</td>
+      <td>/api/comments/:commentId</td>
+      <td>Delete comment</td>
+      <td>USER and ADMIN</td>
+    </tr>
+  </tbody>
+</table>
+
+### Likes
+
+> ⚠️ In progress
+
+<table>
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Method</th>
+      <th>Route</th>
+      <th>Description</th>
+      <th>Authorization</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>❌</td>
+      <td>POST</td>
+      <td>/api/likes/:postId</td>
+      <td>Like a post</td>
+      <td>USER and ADMIN</td>
+    </tr>
+    <tr>
+      <td>❌</td>
+      <td>DELETE</td>
+      <td>/api/likes/:postId</td>
+      <td>Unlike a post</td>
+      <td>USER and ADMIN</td>
+    </tr>
+  </tbody>
+</table>
