@@ -12,3 +12,32 @@ Blog API which I'm building as part of [The Odin Project](https://www.theodinpro
 ## Objective
 
 Build a Rest API for a Blog to learn about API basics and security.
+
+## Progress
+
+- ✅ Authentication system
+  - ✅ Login
+  - ✅ Register
+  - ⚠️ Logout (JWT can't do)
+- ❌ Users
+  - ✅ GET Users
+  - ✅ GET User
+  - ✅ POST User
+  - ❌ UPDATE User
+  - ✅ DELETE User
+- ✅ Posts
+  - ✅ GET Posts
+  - ✅ GET Post
+  - ✅ POST Post
+  - ✅ UPDATE Post
+  - ✅ DELETE Post
+- ✅ Comments
+  - ✅ GET Comments
+  - ✅ GET Comment
+  - ✅ POST Comment
+  - ✅ UPDATE Comment
+  - ✅ DELETE Comment
+- ❌ Likes
+  - ❌ GET Likes
+  - ❌ POST Like
+  - ❌ DELETE Like
