@@ -7,9 +7,14 @@ function errorHandler(
   res: Response,
   next: NextFunction
 ) {
-  // Database entry to update not found
+  // Database entry not found
   if ((err as PrismaClientKnownRequestError).code === 'P2025') {
     return res.status(404).end();
+  }
+
+  // Resource already exists
+  if ((err as PrismaClientKnownRequestError).code === 'P2002') {
+    return res.status(409).end();
   }
 
   // Default behavior
