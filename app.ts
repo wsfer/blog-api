@@ -3,6 +3,7 @@ import authRouter from './routes/authRouter';
 import commentRouter from './routes/commentRouter';
 import postRouter from './routes/postRouter';
 import userRouter from './routes/userRouter';
+import likeRouter from './routes/likeRouter';
 import errorHandler from './middlewares/errorHandler';
 
 const app = express();
@@ -16,6 +17,7 @@ app.use('/auth', authRouter);
 app.use('/api/comments', commentRouter);
 app.use('/api/posts', postRouter);
 app.use('/api/users', userRouter);
+app.use('/api/likes', likeRouter);
 
 app.use((req, res) => {
   res.status(404).end();
