@@ -2,22 +2,18 @@ import type { User } from '../generated/prisma/client';
 import { Request, Response } from 'express';
 import { prisma } from '../lib/prisma';
 import signInUser from '../utils/signInUser';
-import authenticateUser from '../middlewares/authenticateUser';
 import bcrypt from 'bcryptjs';
 
 // Extracts user profile from JWT token and sends some information back to client
-const getProfile = [
-  authenticateUser(),
-  (req: Request, res: Response) => {
-    const user: User = req.user as User;
-    res.json({
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      role: user.role,
-    });
-  },
-];
+function getProfile(req: Request, res: Response) {
+  const user: User = req.user as User;
+  res.json({
+    id: user.id,
+    username: user.username,
+    email: user.email,
+    role: user.role,
+  });
+}
 
 async function postLogin(req: Request, res: Response) {
   const { username, password } = req.body;

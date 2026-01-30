@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import { validateLogin, validateRegister } from '../middlewares/validateUser';
 import authController from '../controllers/authController';
+import authenticateUser from '../middlewares/authenticateUser';
 import handleFormErrors from '../middlewares/handleFormErrors';
 
 const authRouter = Router();
 
-authRouter.get('/profile', authController.getProfile);
+authRouter.get('/profile', authenticateUser(), authController.getProfile);
 
 authRouter.post(
   '/login',
