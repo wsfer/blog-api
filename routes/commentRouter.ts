@@ -21,7 +21,7 @@ commentRouter.post(
 
 commentRouter.patch(
   '/:commentId',
-  authenticateUser(['ADMIN']),
+  authenticateUser(),
   validateUpdateComment,
   handleFormErrors,
   commentController.updateComment
