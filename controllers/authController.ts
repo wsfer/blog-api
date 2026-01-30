@@ -15,6 +15,7 @@ function getProfile(req: Request, res: Response) {
   });
 }
 
+// Sign in a JWT Token and send it back to user
 async function postLogin(req: Request, res: Response) {
   const { username, password } = req.body;
   const user: User | null = await prisma.user.findUnique({
@@ -37,6 +38,7 @@ async function postLogin(req: Request, res: Response) {
   return res.json({ token });
 }
 
+// Creates a new user, sign in JWT Token and send it back to user
 async function postRegister(req: Request, res: Response) {
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const newUser = await prisma.user.create({
@@ -51,6 +53,7 @@ async function postRegister(req: Request, res: Response) {
   return res.json({ token });
 }
 
+// JWT can't do
 function postLogout(req: Request, res: Response) {
   res.status(418).end();
 }
