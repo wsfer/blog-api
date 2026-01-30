@@ -232,11 +232,11 @@ Build a Rest API for a Blog to learn about API basics and security.
       <td>USER and ADMIN</td>
     </tr>
     <tr>
-      <td>⚠️</td>
+      <td>✅</td>
       <td>PATCH</td>
       <td>/api/comments/:commentId</td>
       <td>Update comment</td>
-      <td>ADMIN (TODO: add USER) </td>
+      <td>USER and ADMIN</td>
     </tr>
     <tr>
       <td>✅</td>
@@ -264,18 +264,32 @@ Build a Rest API for a Blog to learn about API basics and security.
   </thead>
   <tbody>
     <tr>
-      <td>❌</td>
+      <td>✅</td>
       <td>POST</td>
       <td>/api/likes/:postId</td>
       <td>Like a post</td>
       <td>USER and ADMIN</td>
     </tr>
     <tr>
-      <td>❌</td>
+      <td>✅</td>
       <td>DELETE</td>
       <td>/api/likes/:postId</td>
       <td>Unlike a post</td>
       <td>USER and ADMIN</td>
+    </tr>
+    <tr>
+      <td>❌</td>
+      <td>GET</td>
+      <td>TODO</td>
+      <td>Get post likes</td>
+      <td>TODO</td>
+    </tr>
+    <tr>
+      <td>❌</td>
+      <td>GET</td>
+      <td>TODO</td>
+      <td>Get user likes</td>
+      <td>TODO</td>
     </tr>
   </tbody>
 </table>
