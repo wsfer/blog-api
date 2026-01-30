@@ -11,21 +11,25 @@ function getUserLikes(req: Request, res: Response) {
 }
 
 async function postLike(req: Request, res: Response) {
-  const { postId } = req.params;
-  const userId = (req.user as User).id;
-
   await prisma.likesOnPosts.create({
     data: {
-      post: { connect: { id: postId } },
-      user: { connect: { id: userId } },
+      post: { connect: { id: req.params.postId } },
+      user: { connect: { id: (req.user as User).id } },
     },
   });
-
   res.status(201).end();
 }
 
-function deleteLike(req: Request, res: Response) {
-  res.status(418).end();
+async function deleteLike(req: Request, res: Response) {
+  await prisma.likesOnPosts.delete({
+    where: {
+      postId_userId: {
+        postId: req.params.postId,
+        userId: (req.user as User).id,
+      },
+    },
+  });
+  res.status(204).end();
 }
 
 export default { getPostLikes, getUserLikes, postLike, deleteLike };
